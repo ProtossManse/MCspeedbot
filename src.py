@@ -183,7 +183,7 @@ async def SSG(ctx, string):
             uri = ssgwr.json()["data"]["runs"][0]["run"]["videos"]["text"]
             
         SSGembed = discord.Embed(color = 0xFFFD58, title="SSG WR:")
-        SSGembed.add_field(name = f"Player: {username}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+        SSGembed.add_field(name = f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}:{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
 
         await ctx.send(embed=SSGembed)
 
@@ -241,7 +241,7 @@ async def RSG(ctx, string):
         mods = modsdict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["dloymqd8"]]
 
         RSGembed = discord.Embed(color = 0xFFFD58, title="RSG WR:")
-        RSGembed.add_field(name= f"Player: {username}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+        RSGembed.add_field(name= f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
 
         await ctx.send (embed=RSGembed)
 
@@ -294,7 +294,7 @@ async def FSG(ctx, string):
         mods = modsdict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
 
         FSGembed = discord.Embed(color = 0xFFFD58,title= "FSG WR:")
-        FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+        FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
 
         await ctx.send(embed=FSGembed)
 
@@ -380,7 +380,9 @@ async def PB(ctx, string, str2):
                 uri = ssgpb.json()["data"][run]["run"]["videos"]["text"]
                 
             SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
-            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:\
+                {rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.\
+                    {igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
             await ctx.send(embed=SSGPBembed)
     elif ssgpb.status_code == 404 or ssgpb.status_code == 420:
         await ctx.send("Unknown user name.")
