@@ -3,7 +3,9 @@ https://discord.com/oauth2/authorize?client_id=471204580516954112&permissions=26
 
 ## Commands
 !SSG WR
+
 !RSG WR
+
 !FSG WR
 
 !PB {speedrun.com nickname} {RSG | SSG}
