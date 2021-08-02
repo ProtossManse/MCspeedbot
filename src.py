@@ -301,8 +301,6 @@ async def FSG(ctx, string):
 
 @bot.command()
 async def PB(ctx, string, str2):
-    # runlist = [1, 2, 3, 4, 5, 6, 7]
-    # for i in runlist:
     ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
     if ssgpb.status_code == 200:
             range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -377,7 +375,7 @@ async def PB(ctx, string, str2):
 
         
             try:
-                uri = ssgpb.json()["data"][run]["run"]["videos"]["links"][run]["uri"]
+                uri = ssgpb.json()["data"][run]["run"]["videos"]["links"][0]["uri"]
             except KeyError:
                 uri = ssgpb.json()["data"][run]["run"]["videos"]["text"]
                 
