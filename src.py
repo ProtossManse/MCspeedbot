@@ -300,78 +300,90 @@ async def FSG(ctx, string):
 
 
 @bot.command()
-async def PB(ctx, string):
+async def PB(ctx, string, str2):
     # runlist = [1, 2, 3, 4, 5, 6, 7]
     # for i in runlist:
     ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
     if ssgpb.status_code == 200:
-        rt = ssgpb.json()["data"][0]["run"]["times"]["realtime_t"]
-        igt = ssgpb.json()["data"][0]["run"]["times"]["ingame_t"]
+            range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            for i in range:
+                seedtype = stdict[ssgpb.json()["data"][i]["run"]["values"]["r8rg67rn"]]
+                if str2 == "SSG":
+                    if seedtype == "SSG":
+                        run = i
+                        break
+                if str2 == "RSG":
+                    if seedtype == "RSG":
+                        run = i
+                        break
 
-        # ------ RTA ------
-        try:
-            dot = str(rt)
-            dot = dot.index(".")
-            intsec = str(rt)[:int(dot)]
-            rtmin = int(intsec) // 60
-            rthr = rtmin // 60
-            rtsec = int(intsec) % 60
-            rtmin = rtmin % 60
-            rtms = str(rt)[int(dot) + 1:]
-        except ValueError:
-            intsec = str(rt)
-            rtmin = int(intsec) // 60
-            rthr = rtmin // 60
-            rtsec = int(intsec) % 60
-            rtmin = rtmin % 60
-            rtms = str(rt)[int(dot) + 1:]
+            rt = ssgpb.json()["data"][run]["run"]["times"]["realtime_t"]
+            igt = ssgpb.json()["data"][run]["run"]["times"]["ingame_t"]
 
-        # ------ IGT ------
-        try:
-            dot = str(igt)
-            dot = dot.index(".")
-            intsec = str(igt)[:int(dot)]
-            igtmin = int(intsec) // 60
-            igthr = igtmin // 60
-            igtsec = int(intsec) % 60
-            igtmin = igtmin % 60
-            igtms = str(igt)[int(dot) + 1:]
-        except ValueError:
-            intsec = str(igt)
-            igtmin = int(intsec) // 60
-            igthr = igtmin // 60
-            igtsec = int(intsec) % 60
-            igtmin = igtmin % 60
-            igtms = str(igt)[int(dot) + 1:]
+            # ------ RTA ------
+            try:
+                dot = str(rt)
+                dot = dot.index(".")
+                intsec = str(rt)[:int(dot)]
+                rtmin = int(intsec) // 60
+                rthr = rtmin // 60
+                rtsec = int(intsec) % 60
+                rtmin = rtmin % 60
+                rtms = str(rt)[int(dot) + 1:]
+            except ValueError:
+                intsec = str(rt)
+                rtmin = int(intsec) // 60
+                rthr = rtmin // 60
+                rtsec = int(intsec) % 60
+                rtmin = rtmin % 60
+                rtms = str(rt)[int(dot) + 1:]
 
-
-
-        date = ssgpb.json()["data"][0]["run"]["date"]
-        comment = ssgpb.json()["data"][0]["run"]["comment"]
+            # ------ IGT ------
+            try:
+                dot = str(igt)
+                dot = dot.index(".")
+                intsec = str(igt)[:int(dot)]
+                igtmin = int(intsec) // 60
+                igthr = igtmin // 60
+                igtsec = int(intsec) % 60
+                igtmin = igtmin % 60
+                igtms = str(igt)[int(dot) + 1:]
+            except ValueError:
+                intsec = str(igt)
+                igtmin = int(intsec) // 60
+                igthr = igtmin // 60
+                igtsec = int(intsec) % 60
+                igtmin = igtmin % 60
+                igtms = str(igt)[int(dot) + 1:]
 
 
-        version = vdict[ssgpb.json()["data"][0]["run"]["values"]["jlzkwql2"]]
-        difficulty = diffidict[ssgpb.json()["data"][0]["run"]["values"]["9l737pn1"]]
-        vrange = rangedict[ssgpb.json()["data"][0]["run"]["values"]["wl33kewl"]]
-        f3 = f3dict[ssgpb.json()["data"][0]["run"]["values"]["ql6g2ow8"]]
-        mods = modsdict[ssgpb.json()["data"][0]["run"]["values"]["dloymqd8"]]
-        seedtype = stdict[ssgpb.json()["data"][0]["run"]["values"]["r8rg67rn"]]
-        place = ssgpb.json()["data"][0]["place"]
 
-        if seedtype == "SSG":
-            colorvar = 0x73E089
-        elif seedtype == "RSG":
-            colorvar = 0x3598FB
+            date = ssgpb.json()["data"][run]["run"]["date"]
+            comment = ssgpb.json()["data"][run]["run"]["comment"]
 
-    
-        try:
-            uri = ssgpb.json()["data"][0]["run"]["videos"]["links"][0]["uri"]
-        except KeyError:
-            uri = ssgpb.json()["data"][0]["run"]["videos"]["text"]
+
+            version = vdict[ssgpb.json()["data"][run]["run"]["values"]["jlzkwql2"]]
+            difficulty = diffidict[ssgpb.json()["data"][run]["run"]["values"]["9l737pn1"]]
+            vrange = rangedict[ssgpb.json()["data"][run]["run"]["values"]["wl33kewl"]]
+            f3 = f3dict[ssgpb.json()["data"][run]["run"]["values"]["ql6g2ow8"]]
+            mods = modsdict[ssgpb.json()["data"][run]["run"]["values"]["dloymqd8"]]
             
-        SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
-        SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
-        await ctx.send(embed=SSGPBembed)
+            place = ssgpb.json()["data"][run]["place"]
+
+            if seedtype == "SSG":
+                colorvar = 0x73E089
+            elif seedtype == "RSG":
+                colorvar = 0x3598FB
+
+        
+            try:
+                uri = ssgpb.json()["data"][run]["run"]["videos"]["links"][run]["uri"]
+            except KeyError:
+                uri = ssgpb.json()["data"][run]["run"]["videos"]["text"]
+                
+            SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
+            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+            await ctx.send(embed=SSGPBembed)
     elif ssgpb.status_code == 404 or ssgpb.status_code == 420:
         await ctx.send("Unknown user name.")
 
