@@ -301,8 +301,9 @@ async def FSG(ctx, string):
 
 @bot.command()
 async def PB(ctx, string):
-
-    ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests")
+    # runlist = [1, 2, 3, 4, 5, 6, 7]
+    # for i in runlist:
+    ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
     if ssgpb.status_code == 200:
         rt = ssgpb.json()["data"][0]["run"]["times"]["realtime_t"]
         igt = ssgpb.json()["data"][0]["run"]["times"]["ingame_t"]
