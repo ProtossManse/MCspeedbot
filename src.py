@@ -1,4 +1,3 @@
-from discord.ext.commands.core import command
 import requests
 import discord
 from discord.ext import commands
