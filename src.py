@@ -181,6 +181,14 @@ async def SSG(ctx, string):
             uri = ssgwr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
         except KeyError:
             uri = ssgwr.json()["data"]["runs"][0]["run"]["videos"]["text"]
+
+        rthr = rthr.zfill(2)
+        rtmin = rthr.zfill(2)
+        rtsec = rthr.zfill(2)
+
+        igthr = rthr.zfill(2)
+        igtmin = rthr.zfill(2)
+        igtsec = rthr.zfill(2)
             
         SSGembed = discord.Embed(color = 0xFFFD58, title="SSG WR:")
         SSGembed.add_field(name = f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
@@ -240,6 +248,14 @@ async def RSG(ctx, string):
         f3 = f3dict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["ql6g2ow8"]]
         mods = modsdict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["dloymqd8"]]
 
+        rthr = rthr.zfill(2)
+        rtmin = rthr.zfill(2)
+        rtsec = rthr.zfill(2)
+
+        igthr = rthr.zfill(2)
+        igtmin = rthr.zfill(2)
+        igtsec = rthr.zfill(2)
+
         RSGembed = discord.Embed(color = 0xFFFD58, title="RSG WR:")
         RSGembed.add_field(name= f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
 
@@ -292,6 +308,14 @@ async def FSG(ctx, string):
         difficulty = diffidict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["0nwkeorn"]]
         f3 = f3dict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["ylqkjo3l"]]
         mods = modsdict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
+
+        rthr = rthr.zfill(2)
+        rtmin = rthr.zfill(2)
+        rtsec = rthr.zfill(2)
+
+        igthr = rthr.zfill(2)
+        igtmin = rthr.zfill(2)
+        igtsec = rthr.zfill(2)
 
         FSGembed = discord.Embed(color = 0xFFFD58,title= "FSG WR:")
         FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
@@ -378,7 +402,15 @@ async def PB(ctx, string, str2):
                 uri = ssgpb.json()["data"][run]["run"]["videos"]["links"][0]["uri"]
             except KeyError:
                 uri = ssgpb.json()["data"][run]["run"]["videos"]["text"]
-                
+            
+            rthr = rthr.zfill(2)
+            rtmin = rthr.zfill(2)
+            rtsec = rthr.zfill(2)
+
+            igthr = rthr.zfill(2)
+            igtmin = rthr.zfill(2)
+            igtsec = rthr.zfill(2)
+
             SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
             SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
             await ctx.send(embed=SSGPBembed)
