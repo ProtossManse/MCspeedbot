@@ -1,3 +1,4 @@
+import os
 import requests
 import discord
 from discord.ext import commands
@@ -121,7 +122,7 @@ stdict = {
 bot = commands.Bot(command_prefix="!", help_command = None)
 
 
-token = "NDcxMjA0NTgwNTE2OTU0MTEy.W1bJdg._gs_C_x2qdQUkX1i4N_0n6LLTOk"
+token = os.environ["token"]
 
 
 @bot.event
