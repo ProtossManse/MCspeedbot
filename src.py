@@ -372,7 +372,7 @@ async def PB(ctx, string):
         SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
         SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr} Hours {rtmin} Minutes {rtsec} Seconds {rtms}\nIGT: {igthr} Hours {igtmin} Minutes {igtsec} Seconds {igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
         await ctx.send(embed=SSGPBembed)
-    elif ssgpb.status_code == 404:
+    elif ssgpb.status_code == 404 or ssgpb.status_code == 420:
         await ctx.send("Unknown user name.")
 
 @bot.command(name="?")
