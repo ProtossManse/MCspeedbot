@@ -8,4 +8,4 @@ https://discord.com/oauth2/authorize?client_id=471204580516954112&permissions=26
 
 !FSG WR
 
-!PB {speedrun.com nickname} {RSG | SSG}
+!PB {speedrun.com nickname} {RSG | SSG | FSG}
