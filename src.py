@@ -123,7 +123,7 @@ stdict = {
 
 bot = commands.Bot(command_prefix="!", help_command = None)
 
-
+a = range(0,15)
 
 
 
@@ -336,18 +336,21 @@ async def PB(ctx, string, str2):
     if str2 == "RSG" or str2 ==  "SSG":
         ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
         if ssgpb.status_code == 200:
-                range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                
                 try:
-                    for i in range:
-                        seedtype = stdict[ssgpb.json()["data"][i]["run"]["values"]["r8rg67rn"]]
-                        if str2 == "SSG":
-                            if seedtype == "SSG":
-                                run = i
-                                break
-                        if str2 == "RSG":
-                            if seedtype == "RSG":
-                                run = i
-                                break
+                    for i in a:
+                        if ssgpb.json()["data"][i]["run"]["category"] == "mkeyl926":
+                            seedtype = stdict[ssgpb.json()["data"][i]["run"]["values"]["r8rg67rn"]]
+                            if str2 == "SSG":
+                                if seedtype == "SSG":
+                                    run = i
+                                    break
+                            if str2 == "RSG":
+                                if seedtype == "RSG":
+                                    run = i
+                                    break
+                        else:
+                            continue
                 except (IndexError, KeyError):
                     await ctx.send("Run not found.")
                 rt = ssgpb.json()["data"][run]["run"]["times"]["realtime_t"]
@@ -436,7 +439,7 @@ async def PB(ctx, string, str2):
         if fsgpb.status_code == 200:
             range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
             try:
-                for i in range:
+                for i in a:
                     cecategory = fsgpb.json()["data"][i]["run"]["category"]
                     if cecategory == "n2y9z41d":
                         runlist = i
