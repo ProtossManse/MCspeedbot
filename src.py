@@ -316,8 +316,8 @@ async def FSG(ctx, string):
         mods = modsdict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
 
         rthr = str(rthr).zfill(2)
-        rtmin =str(rtmin).zfill(2)
-        rtsec =str(rtsec).zfill(2)
+        rtmin = str(rtmin).zfill(2)
+        rtsec = str(rtsec).zfill(2)
         rtms = str(rtms).ljust(3, "0")
         
         igthr = str(igthr).zfill(2)
@@ -526,4 +526,7 @@ async def PB(ctx, string, str2):
 async def help(ctx):
     await ctx.send("```\nPrefix: !\n\nSSG WR\nRSG WR\nFSG WR\nPB {src-name} {SSG | RSG | FSG}```")
 
+@bot.command()
+async def Pag(ctx):
+    await ctx.send("Yo everyone what's going on couriway here.")
 bot.run(token)
