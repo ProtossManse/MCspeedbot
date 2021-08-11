@@ -300,7 +300,7 @@ async def FSG(ctx, string):
         igtms = str(igtms).ljust(3, "0")
 
         FSGembed = discord.Embed(color = 0xFFFD58,title= "FSG WR:")
-        FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+        FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
 
         await ctx.send(embed=FSGembed)
 
@@ -414,7 +414,7 @@ async def PB(ctx, string, str2, *args):
             igtms = str(igtms).ljust(3, "0")
 
             SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
-            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
             await ctx.send(embed=SSGPBembed)
         elif jepb.status_code == 404:
             await ctx.send("Unknown user name.")
@@ -498,7 +498,7 @@ async def PB(ctx, string, str2, *args):
 
 
             fsgpbembed = discord.Embed(color = 0xFAA643,title= "FSG PB:")
-            fsgpbembed.add_field(name= f"Player: {string}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+            fsgpbembed.add_field(name= f"Player: {string}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
 
             await ctx.send(embed=fsgpbembed)
         elif fsgpb.status_code == 404:
