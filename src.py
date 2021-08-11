@@ -5,6 +5,79 @@ from discord.ext import commands
 
 token = os.environ["token"]
 
+def worldRecord(wr):
+        userid = wr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
+        rt = wr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
+        igt = wr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
+
+        try:
+            dot = str(rt)
+            dot = dot.index(".")
+            intsec = str(rt)[:int(dot)]
+            rtmin = int(intsec) // 60
+            rthr = rtmin // 60
+            rtsec = int(intsec) % 60
+            rtmin = rtmin % 60
+            rtms = str(rt)[int(dot) + 1:]
+        except ValueError:
+            intsec = str(rt)
+            rtmin = int(intsec) // 60
+            rthr = rtmin // 60
+            rtsec = int(intsec) % 60
+            rtmin = rtmin % 60
+            rtms = str(rt)[int(dot) + 1:]
+
+        # ------ IGT ------
+        try:
+            dot = str(igt)
+            dot = dot.index(".")
+            intsec = str(igt)[:int(dot)]
+            igtmin = int(intsec) // 60
+            igthr = igtmin // 60
+            igtsec = int(intsec) % 60
+            igtmin = igtmin % 60
+            igtms = str(igt)[int(dot) + 1:]
+        except ValueError:
+            intsec = str(igt)
+            igtmin = int(intsec) // 60
+            igthr = igtmin // 60
+            igtsec = int(intsec) % 60
+            igtmin = igtmin % 60
+            igtms = str(igt)[int(dot) + 1:]
+
+
+
+        userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
+        username = userres.json()["data"]["names"]["international"]
+
+        date = wr.json()["data"]["runs"][0]["run"]["date"]
+        comment = wr.json()["data"]["runs"][0]["run"]["comment"]
+
+
+
+        seedtype = wr.json()["data"]["runs"][0]["run"]["values"]["r8rg67rn"]
+        version = vdict[wr.json()["data"]["runs"][0]["run"]["values"]["jlzkwql2"]]
+        difficulty = diffidict[wr.json()["data"]["runs"][0]["run"]["values"]["9l737pn1"]]
+        vrange = rangedict[wr.json()["data"]["runs"][0]["run"]["values"]["wl33kewl"]]
+        f3 = f3dict[wr.json()["data"]["runs"][0]["run"]["values"]["ql6g2ow8"]]
+        mods = modsdict[wr.json()["data"]["runs"][0]["run"]["values"]["dloymqd8"]]
+        try:
+            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
+        except KeyError:
+            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["text"]
+
+        rthr = str(rthr).zfill(2)
+        rtmin =str(rtmin).zfill(2)
+        rtsec =str(rtsec).zfill(2)
+        rtms = str(rtms).ljust(3, "0")
+        
+        igthr = str(igthr).zfill(2)
+        igtmin = str(igtmin).zfill(2)
+        igtsec = str(igtsec).zfill(2)
+        igtms = str(igtms).ljust(3, "0")
+        wrembed = discord.Embed(color = 0xFFFD58, title=f"{stdict[seedtype]} WR:")
+        wrembed.add_field(name = f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
+        return wrembed
 
 vdict = {
     "mln68v0q": "1.16.1",
@@ -123,7 +196,7 @@ stdict = {
 
 bot = commands.Bot(command_prefix="!", help_command = None)
 
-a = range(0,15)
+a = range(0,30)
 
 
 
@@ -133,148 +206,49 @@ async def on_ready():
 
 
 @bot.command()
-async def SSG(ctx, string):
-    if string == "WR":
-        ssgwr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","top": "1"})
-        userid = ssgwr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
-        rt = ssgwr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
-        igt = ssgwr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
-
-        # ------ RTA ------
-        dot = str(rt)
-        dot = dot.index(".")
-        intsec = str(rt)[:int(dot)]
-        rtmin = int(intsec) // 60
-        rthr = rtmin // 60
-        rtsec = int(intsec) % 60
-        rtmin = rtmin % 60
-        rtms = str(rt)[int(dot) + 1:]
-
-        # ------ IGT ------
-
-        dot = str(igt)
-        dot = dot.index(".")
-        intsec = str(igt)[:int(dot)]
-        igtmin = int(intsec) // 60
-        igthr = igtmin // 60
-        igtsec = int(intsec) % 60
-        igtmin = igtmin % 60
-        igtms = str(igt)[int(dot) + 1:]
-
-
-
-        userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
-        username = userres.json()["data"]["names"]["international"]
-
-        date = ssgwr.json()["data"]["runs"][0]["run"]["date"]
-        comment = ssgwr.json()["data"]["runs"][0]["run"]["comment"]
-
-
-        version = vdict[ssgwr.json()["data"]["runs"][0]["run"]["values"]["jlzkwql2"]]
-        difficulty = diffidict[ssgwr.json()["data"]["runs"][0]["run"]["values"]["9l737pn1"]]
-        vrange = rangedict[ssgwr.json()["data"]["runs"][0]["run"]["values"]["wl33kewl"]]
-        f3 = f3dict[ssgwr.json()["data"]["runs"][0]["run"]["values"]["ql6g2ow8"]]
-        mods = modsdict[ssgwr.json()["data"]["runs"][0]["run"]["values"]["dloymqd8"]]
+async def SSG(ctx, string, ver):
+    if string == "WR" and ver == "1":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1", "var-wl33kewl": "4qye4731","top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    if string == "WR" and ver == "2":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "21go6e6q","top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    if string == "WR" and ver == "3":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "gq7zo9p1","top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    else:
+        await ctx.send("Unknown Command.\n```\nSSG WR {1 | 2 | 3}```")
 
         
-
-        
-        try:
-            uri = ssgwr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
-        except KeyError:
-            uri = ssgwr.json()["data"]["runs"][0]["run"]["videos"]["text"]
-
-        rthr = str(rthr).zfill(2)
-        rtmin =str(rtmin).zfill(2)
-        rtsec =str(rtsec).zfill(2)
-        rtms = str(rtms).ljust(3, "0")
-        
-        igthr = str(igthr).zfill(2)
-        igtmin = str(igtmin).zfill(2)
-        igtsec = str(igtsec).zfill(2)
-        igtms = str(igtms).ljust(3, "0")
-            
-        SSGembed = discord.Embed(color = 0xFFFD58, title="SSG WR:")
-        SSGembed.add_field(name = f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
-
-        await ctx.send(embed=SSGembed)
-
-    
-
-
 
 @bot.command()
-async def RSG(ctx, string):
-    if string == "WR":
-        rsgwr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "top": "1"})
-        userid = rsgwr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
-        rt = rsgwr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
-        igt = rsgwr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
-
-        # ------ RTA ------
-        dot = str(rt)
-        dot = dot.index(".")
-        intsec = str(rt)[:int(dot)]
-        rtmin = int(intsec) // 60
-        rthr = rtmin // 60
-        rtsec = int(intsec) % 60
-        rtmin = rtmin % 60
-        rtms = str(rt)[int(dot) + 1:]
-
-        # ------ IGT ------
-
-        dot = str(igt)
-        dot = dot.index(".")
-        intsec = str(igt)[:int(dot)]
-        igtmin = int(intsec) // 60
-        igthr = igtmin // 60
-        igtsec = int(intsec) % 60
-        igtmin = igtmin % 60
-        igtms = str(igt)[int(dot) + 1:]
-
-
-
-        userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
-        username = userres.json()["data"]["names"]["international"]
-
-        date = rsgwr.json()["data"]["runs"][0]["run"]["date"]
-        comment = rsgwr.json()["data"]["runs"][0]["run"]["comment"]
-
-        try:
-            uri = rsgwr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
-
-        except KeyError:
-            uri = rsgwr.json()["data"]["runs"][0]["run"]["videos"]["text"]
-
-        version = vdict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["jlzkwql2"]]
-        difficulty = diffidict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["9l737pn1"]]
-        vrange = rangedict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["wl33kewl"]]
-        f3 = f3dict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["ql6g2ow8"]]
-        mods = modsdict[rsgwr.json()["data"]["runs"][0]["run"]["values"]["dloymqd8"]]
-
-        rthr = str(rthr).zfill(2)
-        rtmin =str(rtmin).zfill(2)
-        rtsec =str(rtsec).zfill(2)
-        rtms = str(rtms).ljust(3, "0")
-        
-        igthr = str(igthr).zfill(2)
-        igtmin = str(igtmin).zfill(2)
-        igtsec = str(igtsec).zfill(2)
-        igtms = str(igtms).ljust(3, "0")
-
-        RSGembed = discord.Embed(color = 0xFFFD58, title="RSG WR:")
-        RSGembed.add_field(name= f"Player: {username}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
-
-        await ctx.send (embed=RSGembed)
+async def RSG(ctx, string, ver):
+    if string == "WR" and ver == "1":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "4qye4731", "top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    if string == "WR" and ver == "2":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "21go6e6q", "top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    if string == "WR" and ver == "3":
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "gq7zo9p1", "top": "1"})
+        wrembed = worldRecord(wr)
+        await ctx.send(embed=wrembed)
+    else:
+        await ctx.send("Unknown Command.\n```\nRSG WR {1 | 2 | 3}```")
 
 
 @bot.command()
 async def FSG(ctx, string):
     if string == "WR":
-        fsgwr = requests.get("https://www.speedrun.com/api/v1/leaderboards/nd2e9erd/category/n2y9z41d", params={"top": "1"})
-        userid = fsgwr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
-        rt = fsgwr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
-        igt = fsgwr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
+        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/nd2e9erd/category/n2y9z41d", params={"top": "1"})
+        userid = wr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
+        rt = wr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
+        igt = wr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
 
         # ------ RTA ------
         dot = str(rt)
@@ -302,18 +276,18 @@ async def FSG(ctx, string):
         userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
         username = userres.json()["data"]["names"]["international"]
 
-        date = fsgwr.json()["data"]["runs"][0]["run"]["date"]
-        comment = fsgwr.json()["data"]["runs"][0]["run"]["comment"]
+        date = wr.json()["data"]["runs"][0]["run"]["date"]
+        comment = wr.json()["data"]["runs"][0]["run"]["comment"]
 
         try:
-            uri = fsgwr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
+            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
 
         except KeyError:
-            uri = fsgwr.json()["data"]["runs"][0]["run"]["videos"]["text"]
+            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["text"]
 
-        difficulty = diffidict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["0nwkeorn"]]
-        f3 = f3dict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["ylqkjo3l"]]
-        mods = modsdict[fsgwr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
+        difficulty = diffidict[wr.json()["data"]["runs"][0]["run"]["values"]["0nwkeorn"]]
+        f3 = f3dict[wr.json()["data"]["runs"][0]["run"]["values"]["ylqkjo3l"]]
+        mods = modsdict[wr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
 
         rthr = str(rthr).zfill(2)
         rtmin = str(rtmin).zfill(2)
@@ -332,112 +306,123 @@ async def FSG(ctx, string):
 
 
 @bot.command()
-async def PB(ctx, string, str2):
-    if str2 == "RSG" or str2 ==  "SSG":
-        ssgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
-        if ssgpb.status_code == 200:
-                
-                try:
-                    for i in a:
-                        if ssgpb.json()["data"][i]["run"]["category"] == "mkeyl926":
-                            seedtype = stdict[ssgpb.json()["data"][i]["run"]["values"]["r8rg67rn"]]
-                            if str2 == "SSG":
-                                if seedtype == "SSG":
-                                    run = i
-                                    break
-                            if str2 == "RSG":
-                                if seedtype == "RSG":
-                                    run = i
-                                    break
-                        else:
-                            continue
-                except (IndexError, KeyError):
-                    await ctx.send("Run not found.")
-                rt = ssgpb.json()["data"][run]["run"]["times"]["realtime_t"]
-                igt = ssgpb.json()["data"][run]["run"]["times"]["ingame_t"]
+async def PB(ctx, string, str2, *args):
+    if str2 == "RSG" or str2 ==  "SSG" and args[0]:
+        jepb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "j1npme6p"})
+        if jepb.status_code == 200:
+            try:
+                for i in a:
+                    if jepb.json()["data"][i]["run"]["category"] == "mkeyl926":
+                        seedtype = stdict[jepb.json()["data"][i]["run"]["values"]["r8rg67rn"]]
+                        ver = rangedict[jepb.json()["data"][i]["run"]["values"]["wl33kewl"]]
+                        if str2 == "SSG" and seedtype == "SSG":
+                            if args[0] == "1" and ver == "1.16+":
+                                run = i
+                                break
+                            if args[0] == "2" and ver == "1.9-1.15":
+                                run = i
+                                break
+                            if args[0] == "3" and ver == "Pre 1.9":
+                                run = i
+                                break
+                        if str2 == "RSG" and seedtype == "RSG":
+                            if args[0] == "1" and ver == "1.16+":
+                                run = i
+                                break
+                            if args[0] == "2" and ver == "1.9-1.15":
+                                run = i
+                                break
+                            if args[0] == "3" and ver == "Pre 1.9":
+                                run = i
+                                break
+                    else:
+                        continue
+            except (IndexError, KeyError):
+                await ctx.send("Run not found.")
+            rt = jepb.json()["data"][run]["run"]["times"]["realtime_t"]
+            igt = jepb.json()["data"][run]["run"]["times"]["ingame_t"]
 
-                # ------ RTA ------
-                try:
-                    dot = str(rt)
-                    dot = dot.index(".")
-                    intsec = str(rt)[:int(dot)]
-                    rtmin = int(intsec) // 60
-                    rthr = rtmin // 60
-                    rtsec = int(intsec) % 60
-                    rtmin = rtmin % 60
-                    rtms = str(rt)[int(dot) + 1:]
-                except ValueError:
-                    intsec = str(rt)
-                    rtmin = int(intsec) // 60
-                    rthr = rtmin // 60
-                    rtsec = int(intsec) % 60
-                    rtmin = rtmin % 60
-                    rtms = str(rt)[int(dot) + 1:]
+            # ------ RTA ------
+            try:
+                dot = str(rt)
+                dot = dot.index(".")
+                intsec = str(rt)[:int(dot)]
+                rtmin = int(intsec) // 60
+                rthr = rtmin // 60
+                rtsec = int(intsec) % 60
+                rtmin = rtmin % 60
+                rtms = str(rt)[int(dot) + 1:]
+            except ValueError:
+                intsec = str(rt)
+                rtmin = int(intsec) // 60
+                rthr = rtmin // 60
+                rtsec = int(intsec) % 60
+                rtmin = rtmin % 60
+                rtms = str(rt)[int(dot) + 1:]
 
-                # ------ IGT ------
-                try:
-                    dot = str(igt)
-                    dot = dot.index(".")
-                    intsec = str(igt)[:int(dot)]
-                    igtmin = int(intsec) // 60
-                    igthr = igtmin // 60
-                    igtsec = int(intsec) % 60
-                    igtmin = igtmin % 60
-                    igtms = str(igt)[int(dot) + 1:]
-                except ValueError:
-                    intsec = str(igt)
-                    igtmin = int(intsec) // 60
-                    igthr = igtmin // 60
-                    igtsec = int(intsec) % 60
-                    igtmin = igtmin % 60
-                    igtms = str(igt)[int(dot) + 1:]
-
-
-
-                date = ssgpb.json()["data"][run]["run"]["date"]
-                comment = ssgpb.json()["data"][run]["run"]["comment"]
+            # ------ IGT ------
+            try:
+                dot = str(igt)
+                dot = dot.index(".")
+                intsec = str(igt)[:int(dot)]
+                igtmin = int(intsec) // 60
+                igthr = igtmin // 60
+                igtsec = int(intsec) % 60
+                igtmin = igtmin % 60
+                igtms = str(igt)[int(dot) + 1:]
+            except ValueError:
+                intsec = str(igt)
+                igtmin = int(intsec) // 60
+                igthr = igtmin // 60
+                igtsec = int(intsec) % 60
+                igtmin = igtmin % 60
+                igtms = str(igt)[int(dot) + 1:]
 
 
-                version = vdict[ssgpb.json()["data"][run]["run"]["values"]["jlzkwql2"]]
-                difficulty = diffidict[ssgpb.json()["data"][run]["run"]["values"]["9l737pn1"]]
-                vrange = rangedict[ssgpb.json()["data"][run]["run"]["values"]["wl33kewl"]]
-                f3 = f3dict[ssgpb.json()["data"][run]["run"]["values"]["ql6g2ow8"]]
-                mods = modsdict[ssgpb.json()["data"][run]["run"]["values"]["dloymqd8"]]
-                
-                place = ssgpb.json()["data"][run]["place"]
 
-                if seedtype == "SSG":
-                    colorvar = 0x73E089
-                elif seedtype == "RSG":
-                    colorvar = 0x3598FB
+            date = jepb.json()["data"][run]["run"]["date"]
+            comment = jepb.json()["data"][run]["run"]["comment"]
 
+
+            version = vdict[jepb.json()["data"][run]["run"]["values"]["jlzkwql2"]]
+            difficulty = diffidict[jepb.json()["data"][run]["run"]["values"]["9l737pn1"]]
+            vrange = rangedict[jepb.json()["data"][run]["run"]["values"]["wl33kewl"]]
+            f3 = f3dict[jepb.json()["data"][run]["run"]["values"]["ql6g2ow8"]]
+            mods = modsdict[jepb.json()["data"][run]["run"]["values"]["dloymqd8"]]
             
-                try:
-                    uri = ssgpb.json()["data"][run]["run"]["videos"]["links"][0]["uri"]
-                except KeyError:
-                    uri = ssgpb.json()["data"][run]["run"]["videos"]["text"]
-                
-                rthr = str(rthr).zfill(2)
-                rtmin =str(rtmin).zfill(2)
-                rtsec =str(rtsec).zfill(2)
-                rtms = str(rtms).ljust(3, "0")
-                
-                igthr = str(igthr).zfill(2)
-                igtmin = str(igtmin).zfill(2)
-                igtsec = str(igtsec).zfill(2)
-                igtms = str(igtms).ljust(3, "0")
+            place = jepb.json()["data"][run]["place"]
 
-                SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
-                SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
-                await ctx.send(embed=SSGPBembed)
-        elif ssgpb.status_code == 404:
+            if seedtype == "SSG":
+                colorvar = 0x73E089
+            elif seedtype == "RSG":
+                colorvar = 0x3598FB
+
+        
+            try:
+                uri = jepb.json()["data"][run]["run"]["videos"]["links"][0]["uri"]
+            except KeyError:
+                uri = jepb.json()["data"][run]["run"]["videos"]["text"]
+            
+            rthr = str(rthr).zfill(2)
+            rtmin =str(rtmin).zfill(2)
+            rtsec =str(rtsec).zfill(2)
+            rtms = str(rtms).ljust(3, "0")
+            
+            igthr = str(igthr).zfill(2)
+            igtmin = str(igtmin).zfill(2)
+            igtsec = str(igtsec).zfill(2)
+            igtms = str(igtms).ljust(3, "0")
+
+            SSGPBembed = discord.Embed(color = colorvar, title=f"{seedtype} PB:")
+            SSGPBembed.add_field(name = f"Player: {string}", value = f"\n\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nPlace: {place}\nDate: {date}\n\nVersion: {version}\nDifficulty: {difficulty}\nVersion Range: {vrange}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: **`{comment}`**", inline=False)
+            await ctx.send(embed=SSGPBembed)
+        elif jepb.status_code == 404:
             await ctx.send("Unknown user name.")
-        elif ssgpb.status_code == 420:
+        elif jepb.status_code == 420:
             await ctx.send("Please try again later.")
     if str2 == "FSG":
         fsgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "nd2e9erd"})
         if fsgpb.status_code == 200:
-            range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
             try:
                 for i in a:
                     cecategory = fsgpb.json()["data"][i]["run"]["category"]
@@ -524,9 +509,15 @@ async def PB(ctx, string, str2):
 
 @bot.command(name="?")
 async def help(ctx):
-    await ctx.send("```\nPrefix: !\n\nSSG WR\nRSG WR\nFSG WR\nPB {src-name} {SSG | RSG | FSG}```")
+    await ctx.send("```\nPrefix: !\n\nSSG WR {1 | 2 | 3} \nRSG WR {1 | 2 | 3}\nFSG WR\n\nPB {src-name} {SSG | RSG | FSG} {1 | 2 | 3}\n\nPag```")
 
 @bot.command()
 async def Pag(ctx):
     await ctx.send("Yo everyone what's going on couriway here.")
+
+@bot.command()
+async def text(ctx, message):
+    await ctx.send(message)
+
+
 bot.run(token)
