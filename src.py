@@ -209,16 +209,25 @@ async def on_ready():
 async def SSG(ctx, string, ver):
     if string == "WR" and ver == "1":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1", "var-wl33kewl": "4qye4731","top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     if string == "WR" and ver == "2":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "21go6e6q","top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     if string == "WR" and ver == "3":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "gq7zo9p1","top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     else:
         await ctx.send("Unknown Command.\n```\nSSG WR {1 | 2 | 3}```")
 
@@ -228,16 +237,25 @@ async def SSG(ctx, string, ver):
 async def RSG(ctx, string, ver):
     if string == "WR" and ver == "1":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "4qye4731", "top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     if string == "WR" and ver == "2":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "21go6e6q", "top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     if string == "WR" and ver == "3":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "gq7zo9p1", "top": "1"})
-        wrembed = worldRecord(wr)
-        await ctx.send(embed=wrembed)
+        if wr.status_code == 200:
+            wrembed = worldRecord(wr)
+            await ctx.send(embed=wrembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     else:
         await ctx.send("Unknown Command.\n```\nRSG WR {1 | 2 | 3}```")
 
@@ -246,63 +264,66 @@ async def RSG(ctx, string, ver):
 async def FSG(ctx, string):
     if string == "WR":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/nd2e9erd/category/n2y9z41d", params={"top": "1"})
-        userid = wr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
-        rt = wr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
-        igt = wr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
+        if wr.status_code == 200:
+            userid = wr.json()["data"]["runs"][0]["run"]["players"][0]["id"]
+            rt = wr.json()["data"]["runs"][0]["run"]["times"]["realtime_t"]
+            igt = wr.json()["data"]["runs"][0]["run"]["times"]["ingame_t"]
 
-        # ------ RTA ------
-        dot = str(rt)
-        dot = dot.index(".")
-        intsec = str(rt)[:int(dot)]
-        rtmin = int(intsec) // 60
-        rthr = rtmin // 60
-        rtsec = int(intsec) % 60
-        rtmin = rtmin % 60
-        rtms = str(rt)[int(dot) + 1:]
+            # ------ RTA ------
+            dot = str(rt)
+            dot = dot.index(".")
+            intsec = str(rt)[:int(dot)]
+            rtmin = int(intsec) // 60
+            rthr = rtmin // 60
+            rtsec = int(intsec) % 60
+            rtmin = rtmin % 60
+            rtms = str(rt)[int(dot) + 1:]
 
-        # ------ IGT ------
+            # ------ IGT ------
 
-        dot = str(igt)
-        dot = dot.index(".")
-        intsec = str(igt)[:int(dot)]
-        igtmin = int(intsec) // 60
-        igthr = igtmin // 60
-        igtsec = int(intsec) % 60
-        igtmin = igtmin % 60
-        igtms = str(igt)[int(dot) + 1:]
+            dot = str(igt)
+            dot = dot.index(".")
+            intsec = str(igt)[:int(dot)]
+            igtmin = int(intsec) // 60
+            igthr = igtmin // 60
+            igtsec = int(intsec) % 60
+            igtmin = igtmin % 60
+            igtms = str(igt)[int(dot) + 1:]
 
 
 
-        userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
-        username = userres.json()["data"]["names"]["international"]
+            userres = requests.get(f"https://www.speedrun.com/api/v1/users/{userid}")
+            username = userres.json()["data"]["names"]["international"]
 
-        date = wr.json()["data"]["runs"][0]["run"]["date"]
-        comment = wr.json()["data"]["runs"][0]["run"]["comment"]
+            date = wr.json()["data"]["runs"][0]["run"]["date"]
+            comment = wr.json()["data"]["runs"][0]["run"]["comment"]
 
-        try:
-            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
+            try:
+                uri = wr.json()["data"]["runs"][0]["run"]["videos"]["links"][0]["uri"]
 
-        except KeyError:
-            uri = wr.json()["data"]["runs"][0]["run"]["videos"]["text"]
+            except KeyError:
+                uri = wr.json()["data"]["runs"][0]["run"]["videos"]["text"]
 
-        difficulty = diffidict[wr.json()["data"]["runs"][0]["run"]["values"]["0nwkeorn"]]
-        f3 = f3dict[wr.json()["data"]["runs"][0]["run"]["values"]["ylqkjo3l"]]
-        mods = modsdict[wr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
+            difficulty = diffidict[wr.json()["data"]["runs"][0]["run"]["values"]["0nwkeorn"]]
+            f3 = f3dict[wr.json()["data"]["runs"][0]["run"]["values"]["ylqkjo3l"]]
+            mods = modsdict[wr.json()["data"]["runs"][0]["run"]["values"]["jlzwkmql"]]
 
-        rthr = str(rthr).zfill(2)
-        rtmin = str(rtmin).zfill(2)
-        rtsec = str(rtsec).zfill(2)
-        rtms = str(rtms).ljust(3, "0")
-        
-        igthr = str(igthr).zfill(2)
-        igtmin = str(igtmin).zfill(2)
-        igtsec = str(igtsec).zfill(2)
-        igtms = str(igtms).ljust(3, "0")
+            rthr = str(rthr).zfill(2)
+            rtmin = str(rtmin).zfill(2)
+            rtsec = str(rtsec).zfill(2)
+            rtms = str(rtms).ljust(3, "0")
+            
+            igthr = str(igthr).zfill(2)
+            igtmin = str(igtmin).zfill(2)
+            igtsec = str(igtsec).zfill(2)
+            igtms = str(igtms).ljust(3, "0")
 
-        FSGembed = discord.Embed(color = 0xFFFD58,title= "FSG WR:")
-        FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
+            FSGembed = discord.Embed(color = 0xFFFD58,title= "FSG WR:")
+            FSGembed.add_field(name= f"Player: {username}", value = f"\r\n\r\nRTA: {rthr}:{rtmin}:{rtsec}.{rtms}\nIGT: {igthr}:{igtmin}:{igtsec}.{igtms}\nDate: {date}\n\nVersion: 1.16.1\nDifficulty: {difficulty}\nF3: {f3}\nMods: {mods}\n\nVideo URI: <{uri}>\n\nComment: ```\n{comment}```", inline=False)
 
-        await ctx.send(embed=FSGembed)
+            await ctx.send(embed=FSGembed)
+        elif wr.status_code == 420:
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
 
 
 @bot.command()
@@ -419,7 +440,7 @@ async def PB(ctx, string, str2, *args):
         elif jepb.status_code == 404:
             await ctx.send("Unknown user name.")
         elif jepb.status_code == 420:
-            await ctx.send("Please try again later.")
+            await ctx.send("The API service is too busy to handle your request. Please try again later.")
     if str2 == "FSG":
         fsgpb = requests.get(f"https://www.speedrun.com/api/v1/users/{string}/personal-bests", params={"game": "nd2e9erd"})
         if fsgpb.status_code == 200:
