@@ -214,14 +214,14 @@ async def SSG(ctx, string, ver):
             await ctx.send(embed=wrembed)
         elif wr.status_code == 420:
             await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    if string == "WR" and ver == "2":
+    elif string == "WR" and ver == "2":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "21go6e6q","top": "1"})
         if wr.status_code == 200:
             wrembed = worldRecord(wr)
             await ctx.send(embed=wrembed)
         elif wr.status_code == 420:
             await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    if string == "WR" and ver == "3":
+    elif string == "WR" and ver == "3":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "gq7zo9p1","top": "1"})
         if wr.status_code == 200:
             wrembed = worldRecord(wr)
@@ -242,14 +242,14 @@ async def RSG(ctx, string, ver):
             await ctx.send(embed=wrembed)
         elif wr.status_code == 420:
             await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    if string == "WR" and ver == "2":
+    elif string == "WR" and ver == "2":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "21go6e6q", "top": "1"})
         if wr.status_code == 200:
             wrembed = worldRecord(wr)
             await ctx.send(embed=wrembed)
         elif wr.status_code == 420:
             await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    if string == "WR" and ver == "3":
+    elif string == "WR" and ver == "3":
         wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "gq7zo9p1", "top": "1"})
         if wr.status_code == 200:
             wrembed = worldRecord(wr)
