@@ -8,7 +8,9 @@
 
 !FSG WR
 
-!PB {speedrun.com nickname} {RSG | SSG | FSG} [1 | 2 | 3]
+!PB {speedrun.com nickname} {RSG | SSG} [1 | 2 | 3]
+
+!PB {speedrun.com nickname} FSG
 
 !Pag
 
