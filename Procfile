@@ -1,1 +1,1 @@
-worker: python src.py
+worker: python test.py
