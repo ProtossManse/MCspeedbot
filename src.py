@@ -3,7 +3,7 @@ import requests
 import discord
 from discord.ext import commands
 
-token = os.environ.get["token"]
+token = os.environ["token"]
 
 vdict = {
     "mln68v0q": "1.16.1",
