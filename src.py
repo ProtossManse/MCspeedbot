@@ -6,8 +6,7 @@ from discord.ui import Button, View
 
 
 
-# token = os.environ["token"]
-token = "NDcxMjA0NTgwNTE2OTU0MTEy.G5bKoy.DMODcRvXQgskXM02vK-cPJ-88zYOe2YHMOZkzM"
+token = os.environ["token"]
 
 vdict = {
     "mln68v0q": "1.16.1",
