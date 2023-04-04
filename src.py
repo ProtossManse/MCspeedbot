@@ -352,7 +352,7 @@ async def WR(ctx):
         global rsgButtonClicked
         global ssgButtonClicked
         if ssgButtonClicked == True:
-            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['1.13-1.15']}","top": "1"})
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['1.16+']}","top": "1"})
             if wr.status_code == 200:
                 wrembed = worldRecord(wr)
                 await interaction.response.defer()
@@ -368,7 +368,7 @@ async def WR(ctx):
             ssgButtonClicked = False
                 
         elif rsgButtonClicked == True:
-            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['1.13-1.15']}", "top": "1"})
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['1.16+']}", "top": "1"})
             if wr.status_code == 200:
                 wrembed = worldRecord(wr)
                 await interaction.response.defer()
