@@ -2,8 +2,12 @@ import os
 import requests
 import discord
 from discord.ext import commands
+from discord.ui import Button, View
 
-token = os.environ["token"]
+
+
+# token = os.environ["token"]
+token = "NDcxMjA0NTgwNTE2OTU0MTEy.G5bKoy.DMODcRvXQgskXM02vK-cPJ-88zYOe2YHMOZkzM"
 
 vdict = {
     "mln68v0q": "1.16.1",
@@ -98,6 +102,12 @@ rangedict = {
     "jq6j9571":"1.9-1.12",
     "21go6e6q":"1.13-1.15",
     "4qye4731":"1.16+"
+}
+versionrange = {
+    "Pre 1.9": "gq7zo9p1",
+    "1.9-1.12": "jq6j9571",
+    "1.13-1.15": "21go6e6q",
+    "1.16+": "4qye4731"
 }
 
 f3dict = {
@@ -208,73 +218,183 @@ async def on_ready():
     print(f"Login...\n{bot.user.name}\n{bot.user.id}\n------------")
 
 
+
 @bot.command()
-async def SSG(ctx, string, ver):
-    if string == "WR" and ver == "1":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1", "var-wl33kewl": "4qye4731","top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "2":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "21go6e6q","top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "3":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "jq6j9571","top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "4":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": "gq7zo9p1","top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    else:
-        await ctx.send("Unknown Command.\n```\nSSG WR {1 | 2 | 3 | 4}```")
+async def WR(ctx):
+    global ssgButtonClicked
+    global rsgButtonClicked
+    ssgButtonClicked = False
+    rsgButtonClicked = False
+    bt_ssg = Button(label="SSG",style=discord.ButtonStyle.blurple)
+    bt_rsg = Button(label="RSG",style=discord.ButtonStyle.blurple)
+    verPre09 = Button(label="Pre 1.9",style=discord.ButtonStyle.blurple)
+    ver09_12 = Button(label="1.9-1.12",style=discord.ButtonStyle.blurple)
+    ver13_15 = Button(label="1.13-1.15",style=discord.ButtonStyle.blurple)
+    ver16 = Button(label="1.16+",style=discord.ButtonStyle.blurple)
+    view = View()
+    view.add_item(bt_ssg)
+    view.add_item(bt_rsg)
+    async def ssg_callback(interaction:discord.Interaction):
+        global ssgButtonClicked
+        ssgButtonClicked = True
+        view.remove_item(bt_ssg)
+        view.remove_item(bt_rsg)
+        view.add_item(verPre09)
+        view.add_item(ver09_12)
+        view.add_item(ver13_15)
+        view.add_item(ver16)
+        
+        await interaction.response.defer()
+        await wrmsg.edit(content="Version Range:",view=view)
+
+    async def rsg_callback(interaction:discord.Interaction):
+        global rsgButtonClicked
+        rsgButtonClicked = True
+        view.remove_item(bt_ssg)
+        view.remove_item(bt_rsg)
+        view.add_item(verPre09)
+        view.add_item(ver09_12)
+        view.add_item(ver13_15)
+        view.add_item(ver16)
+        
+        await interaction.response.defer()
+        await wrmsg.edit(content="Version Range:",view=view)
+
+    async def verPre09_callback(interaction:discord.Interaction):
+        global rsgButtonClicked
+        global ssgButtonClicked
+        if ssgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['Pre 1.9']}","top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+                
+            elif wr.status_code == 420:           
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")  
+            else: 
+                await ctx.send("Unknown error. Please try again later.")
+            ssgButtonClicked = False
+                
+        elif rsgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['Pre 1.9']}", "top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+            elif wr.status_code == 420:
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")
+            else:
+                await ctx.send("Unknown error. Please try again later.")
+            rsgButtonClicked = False
+    async def ver09_12_callback(interaction:discord.Interaction):
+        global rsgButtonClicked
+        global ssgButtonClicked
+        if ssgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['1.9-1.12']}","top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+                
+
+            elif wr.status_code == 420:           
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")  
+            else: 
+                await ctx.send("Unknown error. Please try again later.")
+            ssgButtonClicked = False
+                
+        elif rsgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['1.9-1.12']}", "top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+            elif wr.status_code == 420:
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")
+            else:
+                await ctx.send("Unknown error. Please try again later.")
+            rsgButtonClicked = False
+    async def ver13_15_callback(interaction:discord.Interaction):
+        global rsgButtonClicked
+        global ssgButtonClicked
+        if ssgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['1.13-1.15']}","top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+                
+
+            elif wr.status_code == 420:           
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")  
+            else: 
+                await ctx.send("Unknown error. Please try again later.")
+            ssgButtonClicked = False
+                
+        elif rsgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['1.13-1.15']}", "top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+            elif wr.status_code == 420:
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")
+            else:
+                await ctx.send("Unknown error. Please try again later.")
+            rsgButtonClicked = False
+    async def ver16_callback(interaction:discord.Interaction):
+        global rsgButtonClicked
+        global ssgButtonClicked
+        if ssgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "klrzpjo1","var-wl33kewl": f"{versionrange['1.13-1.15']}","top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+                
+                
+
+            elif wr.status_code == 420:           
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")  
+            else: 
+                await ctx.send("Unknown error. Please try again later.")
+            ssgButtonClicked = False
+                
+        elif rsgButtonClicked == True:
+            wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": f"{versionrange['1.13-1.15']}", "top": "1"})
+            if wr.status_code == 200:
+                wrembed = worldRecord(wr)
+                await interaction.response.defer()
+                await wrmsg.delete()
+                await ctx.send(embed=wrembed)
+            elif wr.status_code == 420:
+                await ctx.send("The API service is too busy to handle your request. Please try again later.")
+            else:
+                await ctx.send("Unknown error. Please try again later.")
+            rsgButtonClicked = False
 
         
 
-@bot.command()
-async def RSG(ctx, string, ver):
-    if string == "WR" and ver == "1":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "4qye4731", "top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "2":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "21go6e6q", "top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "3":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "jq6j9571", "top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    elif string == "WR" and ver == "4":
-        wr = requests.get("https://www.speedrun.com/api/v1/leaderboards/j1npme6p/category/mkeyl926", params={"var-r8rg67rn": "21d4zvp1", "var-wl33kewl": "gq7zo9p1", "top": "1"})
-        if wr.status_code == 200:
-            wrembed = worldRecord(wr)
-            await ctx.send(embed=wrembed)
-        elif wr.status_code == 420:
-            await ctx.send("The API service is too busy to handle your request. Please try again later.")
-    else:
-        await ctx.send("Unknown Command.\n```\nRSG WR {1 | 2 | 3 | 4 | 4}```")
+    bt_ssg.callback = ssg_callback
+    bt_rsg.callback = rsg_callback
+    verPre09.callback = verPre09_callback
+    ver09_12.callback = ver09_12_callback
+    ver13_15.callback = ver13_15_callback
+    ver16.callback = ver16_callback
+
+
+
+    wrmsg = await ctx.send("WR Seed Type:",view=view)
+    
+   
 
 
 
@@ -293,10 +413,10 @@ async def PB(ctx, string, str2, *args):
                             if args[0] == "1" and ver == "1.16+":
                                 run = i
                                 break
-                            if args[0] == "2" and ver == "1.9-1.12":
+                            if args[0] == "2" and ver == "1.13-1.15":
                                 run = i
                                 break
-                            if args[0] == "3" and ver == "1.13-1.15":
+                            if args[0] == "3" and ver == "1.9-1.12":
                                 run = i
                                 break
                             if args[0] == "4" and ver == "Pre 1.9":
@@ -306,10 +426,10 @@ async def PB(ctx, string, str2, *args):
                             if args[0] == "1" and ver == "1.16+":
                                 run = i
                                 break
-                            if args[0] == "2" and ver == "1.9-1.12":
+                            if args[0] == "2" and ver == "1.13-1.15":
                                 run = i
                                 break
-                            if args[0] == "3" and ver == "1.13-1.15":
+                            if args[0] == "3" and ver == "1.9-1.12":
                                 run = i
                                 break
                             if args[0] == "4" and ver == "Pre 1.9":
@@ -408,7 +528,7 @@ async def PB(ctx, string, str2, *args):
 
 @bot.command(name="help")
 async def help(ctx):
-    await ctx.send("```\nPrefix: !\n\n1: 1.16+\n2: 1.13-1.15\n3: 1.9-1.12\n4: Pre 1.9 \n\n!SSG WR {1 | 2 | 3 | 4} \n!RSG WR {1 | 2 | 3 | 4}\n\n!PB {username} {SSG | RSG} {1 | 2 | 3 | 4}\n\n!Pag\n\nContact: ProtossManse#3053(discord)```")
+    await ctx.send("```!WR\n\n!PB {username} {SSG | RSG} {1 | 2 | 3 | 4}\n\n!Pag\n\nContact: ProtossManse#3053(discord)```")
 
 @bot.command()
 async def Pag(ctx):

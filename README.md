@@ -2,9 +2,7 @@
 [Invite Bot](https://discord.com/oauth2/authorize?client_id=471204580516954112&permissions=216064&scope=bot)
 
 ## Commands
-!SSG WR {1 | 2 | 3 | 4}
-
-!RSG WR {1 | 2 | 3 | 4}
+!WR
 
 !PB {speedrun.com username} {RSG | SSG} [1 | 2 | 3]
 
