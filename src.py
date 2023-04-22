@@ -537,20 +537,6 @@ async def Pag(ctx):
 async def text(ctx, message):
     await ctx.send(message)
 
-@bot.command()
-async def patchnote(ctx):
-    patchembed = discord.Embed(color = 0xCD2E57, title= "Patch Notes:")
-    patchembed.add_field(name="죄송합니다", value="\n\n현생이 바빠서 여기 서버 들어오지도 못했네요 ㅜㅜ \n\n버전 바뀌었다는 거랑 이 봇이 없어졌다는 것도 얼마 전에 알았어요..\n\n")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="\n버전 세분화", value="\n\n스피드런 버전에 맞춰 네가지 버전으로 조회가 가능해졌습니다.\n\n")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="!help 명령어 추가",value="\n\n")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="",value="")
-    patchembed.add_field(name="버그 수정",value="이제 다시 봇이 작동합니다.\n\n")
-    await ctx.send(embed=patchembed)
 
 
 bot.run(token)
