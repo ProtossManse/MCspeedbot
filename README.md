@@ -8,6 +8,8 @@
 
 !Pag
 
+!help
+
 ## Version Range
 
 1: 1.16+
